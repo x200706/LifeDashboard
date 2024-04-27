@@ -12,5 +12,7 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index')->name('home');
-
+    $router->resource('account', AccountController::class);
+    $router->resource('account-record', AccountRecordController::class);
+    $router->resource('account-record-tags', AccountRecordTagsController::class);
 });
