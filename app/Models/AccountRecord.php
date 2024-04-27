@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AccountRecord extends Model
 {
-    protected $connection = 'mysql';
+    protected $connection = 'pgsql';
     protected $table = 'account_record';
     protected $primaryKey = 'id';
 

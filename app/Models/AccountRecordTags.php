@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AccountRecordTags extends Model
 {
-    protected $connection = 'mysql';
+    protected $connection = 'pgsql';
     protected $table = 'account_record_tags';
     protected $primaryKey = 'name';
 
