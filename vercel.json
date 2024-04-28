@@ -5,8 +5,12 @@
     },
     "routes": [
         {
-            "src": "/build/(.*)",
-            "dest": "/public/build/"
+            "src": "/upoload/(.)",
+            "dest": "/public/upoload"
+        },
+        {
+            "src": "/vendor/(.)",
+            "dest": "/public/vendor"
         },
         {
             "src": "/(.*)",
