@@ -5,12 +5,8 @@
     },
     "routes": [
         {
-            "src": "/(favicon\\.ico|robots\\.txt)",
-            "dest": "/public/$1"
-        },
-        {
-            "src": "/build/(.*)",
-            "dest": "/public/build/$1"
+            "src": "/upload/images/(.*)",
+            "dest": "/public//upload/images/$1"
         },
         {
             "src": "/(.*)",
