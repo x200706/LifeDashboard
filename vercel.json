@@ -5,8 +5,8 @@
     },
     "routes": [
         {
-            "src": "/upoload/(.)",
-            "dest": "/public/upoload"
+            "src": "/upoload/images/(.*)",
+            "dest": "/public/upoload/images"
         },
         {
             "src": "/vendor/(.)",
