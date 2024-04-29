@@ -5,12 +5,12 @@
     },
     "routes": [
         {
-            "src": "/upoload/images/(.*)",
-            "dest": "/public/upoload/images/"
+            "src": "/(favicon\\.ico|robots\\.txt)",
+            "dest": "/public/$1"
         },
         {
-            "src": "/vendor/(.)",
-            "dest": "/public/vendor"
+            "src": "/build/(.*)",
+            "dest": "/public/build/$1"
         },
         {
             "src": "/(.*)",
