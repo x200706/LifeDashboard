@@ -6,7 +6,7 @@
     "routes": [
         {
             "src": "/upload/images/(.*)",
-            "dest": "/../tmp/public/upload/images/$1"
+            "dest": "/public/upload/images/$1"
         },
         {
             "src": "/vendor/laravel-admin/(.*)",
