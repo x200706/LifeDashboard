@@ -20,7 +20,7 @@
     "env": {
         "APP_ENV": "prod",
         "APP_DEBUG": "true",
-        "SESSION_DRIVER": "file",
+        "SESSION_DRIVER": "cookies",
 
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
