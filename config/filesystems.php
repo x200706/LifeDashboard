@@ -41,7 +41,6 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
-
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -51,14 +50,39 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'visibility' => 'public',
-            'bucket_endpoint' => false,
         ],
         'admin' => [
             'driver'     => 'local',
             'root'       => public_path('upload'),
             'visibility' => 'public',
             'url' => env('APP_URL').'/upload/',
+        ],
+        'cloudinary' => [
+            'driver'         => 'cloudinary',
+            'api_key'        => env('CLOUDINARY_API_KEY'),
+            'api_secret'     => env('CLOUDINARY_API_SECRET'),
+            'cloud_name'     => env('CLOUDINARY_CLOUD_NAME'),
+            'secure'         => env('CLOUDINARY_SECURE', true),
+            'resource_types' => [
+                'image' => [
+                    'png',
+                    'jpeg',
+                    'jpg',
+                ],
+                'video' => [
+                    'mp4',
+                    'avi',
+                    'mp3',
+                    'flac',
+                ],
+                'raw'   => [
+                    'pdf',
+                    'xlsx',
+                    'csv',
+                    'txt',
+                    'log',
+                ],
+            ],
         ],
 
     ],

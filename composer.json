@@ -12,7 +12,8 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "league/flysystem-aws-s3-v3": "1.0.29"
+        "league/flysystem-aws-s3-v3": "1.0.29",
+        "yoelpc4/laravel-cloudinary": "^2.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
