@@ -7,16 +7,16 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-use App\Models\AccountRecordTags;
+use App\Models\Account;
 
-class AccountRecordTagsController extends AdminController
+class AccountController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = '記帳類別管理';
+    protected $title = '資產帳戶管理';
 
     /**
      * Make a grid builder.
@@ -25,7 +25,7 @@ class AccountRecordTagsController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new AccountRecordTags);
+        $grid = new Grid(new Account);
 
         $grid->disableCreateButton(); // 禁用新增按鈕
         $grid->disableActions(); // 禁用單行異動按鈕
@@ -37,12 +37,14 @@ class AccountRecordTagsController extends AdminController
         $grid->quickCreate(function (Grid\Tools\QuickCreate $create) {
             $create->text('name', '類別代號');
             $create->text('desc', '顯示名稱');
+            $create->text('amount', '餘額'); //TODO 型態不對
+            $create->text('status', '狀態'); //TODO 型態不對；應該用選項卡
         });
 
         $grid->column('name', '類別代號')->editable();
         $grid->column('desc', '顯示名稱')->editable();
-        // 只能多不能少；暫時沒有軟刪除功能
-        // 或是說刪除分類同時，要把符合該類別的記帳順便還原為未分類
+        $grid->column('amount', '餘額'); // 不給改
+        $grid->column('status', '狀態')->editable(); // 只能軟刪除
 
         return $grid;
     }
@@ -54,10 +56,12 @@ class AccountRecordTagsController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new AccountRecordTags);
+        $form = new Form(new Account);
 
-        $form->text('name', '類別代號');
+        $form->text('name', '戶頭代號');
         $form->text('desc', '顯示名稱');
+        $form->text('amount', '餘額'); //TODO 型態不對
+        $form->text('status', '狀態'); //TODO 型態不對；應該用選項卡
 
         return $form;
     }

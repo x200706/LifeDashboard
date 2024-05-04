@@ -13,22 +13,15 @@ class HomeController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->title('Dashboard')
-            ->description('Description...')
-            ->row(Dashboard::title())
+            ->title('生活後台')
+            ->description('適用於各種共同生活群體的管理系統')
             ->row(function (Row $row) {
 
-                $row->column(4, function (Column $column) {
-                    $column->append(Dashboard::environment());
-                });
+                $row->column(4,'首頁'); //TODO 填充首頁內容
 
-                $row->column(4, function (Column $column) {
-                    $column->append(Dashboard::extensions());
-                });
+                $row->column(4,'最新消息');
 
-                $row->column(4, function (Column $column) {
-                    $column->append(Dashboard::dependencies());
-                });
+                $row->column(4,'快速導覽');
             });
     }
 }

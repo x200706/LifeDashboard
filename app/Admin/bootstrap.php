@@ -20,4 +20,20 @@
 
 Encore\Admin\Form::forget(['map', 'editor']);
 
-Admin::style('.skin-blue-light .main-header .navbar { background-color: #191d37; } .skin-blue-light .main-header .logo { background-color: #4e5bad; color: #fff; border-bottom: 0 solid transparent; } .skin-blue-light .main-header .logo:hover { background-color: #4e5bad; } .skin-blue-light .main-header .navbar .sidebar-toggle:hover { background-color: #4e5bad; } .bg-light-blue, .label-primary, .modal-primary .modal-body { background-color: #606fd2 !important; } .skin-blue-light .main-header li.user-header { background-color: #a6a0e8; }');
+Admin::style('
+.skin-black .main-header>.logo {
+    background-color: #24b8bf;
+    color: #ffffff;
+    border-bottom: 0 solid transparent;
+    border-right: #24b8bf;
+}
+
+.main-header .sidebar-toggle:before {
+    content: "\f0c9";
+    color: #8c9fa1;
+}
+
+.logo-mini:hover {
+    background-color: #24b8bf;
+}
+');
