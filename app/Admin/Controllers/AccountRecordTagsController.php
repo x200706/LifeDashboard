@@ -28,14 +28,19 @@ class AccountRecordTagsController extends AdminController
         $grid = new Grid(new AccountRecordTags);
 
         // $grid->disableCreateButton(); // 禁用新增按鈕
-        // $grid->disableActions(); // 禁用單行異動按鈕
+        $grid->disableActions(); // 禁用單行異動按鈕
         $grid->disableFilter(); // 禁用漏斗
         $grid->disableExport(); // 禁用匯出
         $grid->disableRowSelector(); // 禁用選取
         $grid->disableColumnSelector(); // 禁用像格子圖案的按鈕
 
-        $grid->column('name', '類別代號');
-        $grid->column('desc', '顯示名稱');
+        $grid->quickCreate(function (Grid\Tools\QuickCreate $create) {
+            $create->text('name', '類別代號');
+            $create->text('desc', '顯示名稱');
+        });
+
+        $grid->column('name', '類別代號')->editable();
+        $grid->column('desc', '顯示名稱')->editable();
 
         return $grid;
     }
