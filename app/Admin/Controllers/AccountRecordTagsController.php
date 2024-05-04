@@ -7,7 +7,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-use App\Admin\Models\AccountRecordTags;
+use App\Models\AccountRecordTags;
 
 class AccountRecordTagsController extends AdminController
 {
