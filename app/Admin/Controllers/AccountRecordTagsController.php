@@ -49,8 +49,8 @@ class AccountRecordTagsController extends AdminController
     {
         $form = new Form(new AccountRecordTags);
 
-        $form->display('name', '類別代號');
-        $form->display('desc', '顯示名稱');
+        $form->textarea('name', '類別代號');
+        $form->textarea('desc', '顯示名稱');
 
         return $form;
     }
