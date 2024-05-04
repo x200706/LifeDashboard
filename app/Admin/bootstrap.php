@@ -28,8 +28,7 @@ Admin::style('
     border-right: #24b8bf;
 }
 
-.main-header .sidebar-toggle:before {
-    content: "\f0c9";
+.main-header .sidebar-toggle:before, .fa-refresh:before, span.hidden-xs{
     color: #8c9fa1;
 }
 
