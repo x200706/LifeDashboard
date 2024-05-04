@@ -27,7 +27,7 @@ class AccountRecordTagsController extends AdminController
     {
         $grid = new Grid(new AccountRecordTags);
 
-        // $grid->disableCreateButton(); // 禁用新增按鈕
+        $grid->disableCreateButton(); // 禁用新增按鈕
         $grid->disableActions(); // 禁用單行異動按鈕
         $grid->disableFilter(); // 禁用漏斗
         $grid->disableExport(); // 禁用匯出
