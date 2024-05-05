@@ -103,7 +103,7 @@ class AccountRecordController extends AdminController
                             break;
                     }
                 } elseif ($form->amount != $form->model()->amount) { //TODO 3. 如果金額變了->異動當前帳戶金額
-                    // 退回原本的金額
+                    // 先退回原本的金額
                     // 抓取DB收支類型後進行金額異動
                 } elseif ($form->account != $form->model()->account) { //TODO 4. 如果帳戶變了->回滾當前帳戶金額 異動新帳戶金額
                     
@@ -113,7 +113,7 @@ class AccountRecordController extends AdminController
         
         });
 
-        //TODO 刪除記帳的退回動作
+        //TODO 刪除記帳的回滾動作
 
         return $form;
     }
