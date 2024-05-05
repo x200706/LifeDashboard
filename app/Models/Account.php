@@ -9,6 +9,6 @@ class Account extends Model
     protected $table = 'account';
     protected $primaryKey = 'name';
 
-    public $incrementing = true; 
+    public $incrementing = false; // varchar pk這個填錯會導致取值異常呢..
     public $timestamps = false; 
 }
