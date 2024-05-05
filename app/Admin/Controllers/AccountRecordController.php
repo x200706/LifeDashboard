@@ -46,7 +46,7 @@ class AccountRecordController extends AdminController
         });
         
 
-        $grid->quickCreate(function (Grid\Tools\QuickCreate $create) {
+        $grid->quickCreate(function (Grid\Tools\QuickCreate $create) { // 注意到匿名函數裡面可以用最外面的use？！
             $create->date('date', '日期');
             $create->text('name', '名稱');
             $create->select('type', '收支類型')->options(['income' => '收入','expense' => '支出',]);
@@ -88,18 +88,28 @@ class AccountRecordController extends AdminController
         //TODO 根據收支類型異動帳戶金額
         $form->saving(function (Form $form) {
             // 行內編輯一次只能改一格嘛～所以一次只進一種判斷式
+            // 寫法有點醜ˇWˇ
 
-            Log::info('表單送出的：'.$form->id.' 資料庫的'.$form->model()->id);
-            if ($form->id != null) { // 1. 首次新增
-                Log::info('首次新增');
+            // 1. 非首次新增才會進到這裡（首次新增時且存檔前還沒執行SQL，DB裡沒這資料，自然也會自增id，所以根本查不到東西）
+            if (!($form->model()->id === null)) {
+
+                // 變了定義：表單收到的，跟更新前的資料庫內容不同，如果選一樣送出的就不會進入各個條件，請放心
+                if ($form->type != $form->model()->type) { //TODO 2. 如果收支類型變了->異動當前帳戶金額
+                    $amount = $form->model()->type; // 要異動的量
+                    switch ($form->type) {
+                        case 'income': // 從支出變為收入
+                            break;
+                        case 'expense': // 從收入變為支出
+                            break;
+                    }
+                } elseif ($form->amount != $form->model()->amount) { //TODO 3. 如果金額變了->異動當前帳戶金額
+                    // 退回原本的金額
+                    // 抓取DB收支類型後進行金額異動
+                } elseif ($form->account != $form->model()->account) { //TODO 4. 如果帳戶變了->回滾當前帳戶金額 異動新帳戶金額
+                    
+                }
             } 
-            // elseif ($form->type != $form->model()->type) { // 2. 如果收支類型變了->當前帳戶金額回滾
-            //     Log::info($form->type.''.$form->model()->type);
-            // }
-            
-            // 3. 如果金額變了->當前帳戶金額回滾
-
-            // 4. 如果帳戶變了->當前帳戶回滾 異動新帳戶金額
+            // 補充：自增是DB做的，表單也不會送出id；行內修改都是update那個欄位而已，表單也不會送出id
         
         });
 
