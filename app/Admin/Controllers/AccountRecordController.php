@@ -7,6 +7,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
+use Illuminate\Support\Facades\Log;
+
 use App\Models\AccountRecord;
 use App\Models\Account;
 use App\Models\AccountRecordTags;
@@ -50,22 +52,19 @@ class AccountRecordController extends AdminController
             $create->select('type', '收支類型')->options(['income' => '收入','expense' => '支出',]);
             $create->select('tag', '記帳分類')->options(AccountRecordTags::all()->pluck('desc','name'));
             $create->integer('amount', '金額');
-            $create->select('account', '帳戶')->options(Account::all()->pluck('desc','name'));
-            // 根據官方文件 使用belongTo可以顯示更多
+            $create->select('account', '帳戶')->options(Account::all()->pluck('desc','name')); // 根據官方文件 使用belongTo可以顯示更多
         });
 
-
-        $grid->column('date', '日期');
-        $grid->column('name', '名稱');
-        $grid->column('type', '收支類型')->using(['income' => '收入','expense' => '支出',]); //TODO 根據收支變色 收為綠支為紅
-        $grid->column('tag', '記帳分類')->display(function ($tag) {
-            return AccountRecordTags::find($tag)->desc; // 有點N+1味的手動關聯orz||
-        });
+        $grid->column('date', '日期')->editable('date'); //TODO 由新到舊
+        $grid->column('name', '名稱')->editable();
+        $grid->column('type', '收支類型')->editable('select', ['income' => '收入','expense' => '支出',])->label([
+            'income' => 'success',
+            'expense' => 'danger',
+        ]);
+        $grid->column('tag', '記帳分類')->editable('select', AccountRecordTags::all()->pluck('desc','name')); // 震驚發現 因為跟display混用導致介面異常，發現editable會自己對應上陣列內容
         // 這種單純狀況也是能一開始grid就調用model()做join 不過因為涉及另外兩張表 之前測過這邊leftJoin可有問題的 用關係或手動查吧
-        $grid->column('amount', '金額')->sortable(); //TODO 修改得異動帳戶..
-        $grid->column('account', '帳戶')->display(function ($account) {
-            return Account::find($account)->desc;
-        });
+        $grid->column('amount', '金額')->sortable()->editable();
+        $grid->column('account', '帳戶')->editable('select', Account::all()->pluck('desc','name'));
 
         return $grid;
     }
@@ -86,7 +85,25 @@ class AccountRecordController extends AdminController
         $form->number('amount', '金額');
         $form->select('account', '帳戶')->options(Account::all()->pluck('desc','name'));
 
-        // 有沒有可能回調會從這裡來?!
+        //TODO 根據收支類型異動帳戶金額
+        $form->saving(function (Form $form) {
+            // 行內編輯一次只能改一格嘛～所以一次只進一種判斷式
+
+            Log::info('表單送出的：'.$form->id.' 資料庫的'.$form->model()->id);
+            if ($form->id != null) { // 1. 首次新增
+                Log::info('首次新增');
+            } 
+            // elseif ($form->type != $form->model()->type) { // 2. 如果收支類型變了->當前帳戶金額回滾
+            //     Log::info($form->type.''.$form->model()->type);
+            // }
+            
+            // 3. 如果金額變了->當前帳戶金額回滾
+
+            // 4. 如果帳戶變了->當前帳戶回滾 異動新帳戶金額
+        
+        });
+
+        //TODO 刪除記帳的退回動作
 
         return $form;
     }

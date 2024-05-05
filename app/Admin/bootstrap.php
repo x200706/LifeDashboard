@@ -39,4 +39,14 @@ Admin::style('
 .bootstrap-datetimepicker-widget.dropdown-menu {
     display: contents!important; /*日期選擇器CSS修復*/
 }
+
+/*修正有連結的標籤色彩*/
+.label.label-danger a.grid-editable-type.editable.editable-click {
+    color:#fff;
+    border-bottom: dashed 1px #fff;
+}
+.label.label-success a.grid-editable-type.editable.editable-click {
+    color:#fff;
+    border-bottom: dashed 1px #fff;
+}
 ');
