@@ -3,6 +3,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Account;
+use App\Models\AccountRecordTags;
+
+
 class AccountRecord extends Model
 {
     protected $connection = 'pgsql';
@@ -11,4 +15,16 @@ class AccountRecord extends Model
 
     public $incrementing = true; 
     public $timestamps = false; 
+
+    // 哇怎麼這麼耗費記憶體..
+    // public function tag()
+    // {
+    //     return $this->hasOne(AccountRecordTags::class);
+    // }
+
+     // ORM Model關聯調用，有點耗記憶體@@
+    // public function account()
+    // {
+    //     return $this->hasOne(Account::class, 'name', 'account');
+    // }
 }

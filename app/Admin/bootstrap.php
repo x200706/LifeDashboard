@@ -35,4 +35,8 @@ Admin::style('
 .logo-mini:hover {
     background-color: #24b8bf;
 }
+
+.bootstrap-datetimepicker-widget.dropdown-menu {
+    display: contents!important; /*日期選擇器CSS修復*/
+}
 ');

@@ -8,6 +8,8 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
 use App\Models\AccountRecord;
+use App\Models\Account;
+use App\Models\AccountRecordTags;
 
 class AccountRecordController extends AdminController
 {
@@ -46,21 +48,24 @@ class AccountRecordController extends AdminController
             $create->date('date', '日期');
             $create->text('name', '名稱');
             $create->select('type', '收支類型')->options(['income' => '收入','expense' => '支出',]);
-            $create->text('tag', '記帳分類'); //TODO 關聯選擇
+            $create->select('tag', '記帳分類')->options(AccountRecordTags::all()->pluck('desc','name'));
             $create->integer('amount', '金額');
-            $create->text('account', '帳戶'); //TODO 關聯選擇
-            // https://github.com/z-song/laravel-admin/issues/4223
-            // belongTo可以顯示更多
+            $create->select('account', '帳戶')->options(Account::all()->pluck('desc','name'));
+            // 根據官方文件 使用belongTo可以顯示更多
         });
 
 
         $grid->column('date', '日期');
         $grid->column('name', '名稱');
-        $grid->column('type', '收支類型'); //TODO 根據收支變色 收為綠支為紅
-        $grid->column('tag', '記帳分類'); //TODO 關聯顯示
-        // 這種單純狀況是能一開始grid就join 但在模型裡寫關係 也是一種充滿美德的新模式
+        $grid->column('type', '收支類型')->using(['income' => '收入','expense' => '支出',]); //TODO 根據收支變色 收為綠支為紅
+        $grid->column('tag', '記帳分類')->display(function ($tag) {
+            return AccountRecordTags::find($tag)->desc; // 有點N+1味的手動關聯orz||
+        });
+        // 這種單純狀況也是能一開始grid就調用model()做join 不過因為涉及另外兩張表 之前測過這邊leftJoin可有問題的 用關係或手動查吧
         $grid->column('amount', '金額')->sortable(); //TODO 修改得異動帳戶..
-        $grid->column('account', '帳戶'); //TODO 關聯顯示
+        $grid->column('account', '帳戶')->display(function ($account) {
+            return Account::find($account)->desc;
+        });
 
         return $grid;
     }
@@ -77,9 +82,9 @@ class AccountRecordController extends AdminController
         $form->date('date', '日期');
         $form->text('name', '名稱');
         $form->select('type', '收支類型')->options(['income' => '收入','expense' => '支出',]);
-        $form->text('tag', '記帳分類'); //TODO 關聯選擇
+        $form->select('tag', '記帳分類')->options(AccountRecordTags::all()->pluck('desc','name'));
         $form->number('amount', '金額');
-        $form->text('account', '帳戶'); //TODO 關聯選擇
+        $form->select('account', '帳戶')->options(Account::all()->pluck('desc','name'));
 
         // 有沒有可能回調會從這裡來?!
 
