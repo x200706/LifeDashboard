@@ -85,17 +85,18 @@ class AccountRecordController extends AdminController
         $form->number('amount', '金額');
         $form->select('account', '帳戶')->options(Account::all()->pluck('desc','name'));
 
+        //TODO 註解好亂把註解減少或搬走
         //TODO 根據收支類型異動帳戶金額
         $form->saving(function (Form $form) {
             // 行內編輯一次只能改一格嘛～所以一次只進一種判斷式
             // 寫法有點醜ˇWˇ
 
             // 1. 非首次新增才會進到這裡（首次新增時且存檔前還沒執行SQL，DB裡沒這資料，自然也會自增id，所以根本查不到東西）
-            if (!($form->model()->id === null)) {
+            if (!($form->model()->id === null)) { //TODO 寫成func checkCreateOrUpdate enum
 
                 // 變了定義：表單收到的，跟更新前的資料庫內容不同，如果選一樣送出的就不會進入各個條件，請放心
                 if ($form->type != $form->model()->type) { //TODO 2. 如果收支類型變了->異動當前帳戶金額
-                    $amount = $form->model()->type; // 要異動的量
+                    $amount = $form->model()->amount; // 要異動的量
                     switch ($form->type) {
                         case 'income': // 從支出變為收入
                             break;
@@ -103,10 +104,21 @@ class AccountRecordController extends AdminController
                             break;
                     }
                 } elseif ($form->amount != $form->model()->amount) { //TODO 3. 如果金額變了->異動當前帳戶金額
+                    switch ($form->model()->type) {
+                        case 'income': // 原本是收入
+                            break;
+                        case 'expense': // 原本是支出
+                            break;
+                    }
                     // 先退回原本的金額
                     // 抓取DB收支類型後進行金額異動
                 } elseif ($form->account != $form->model()->account) { //TODO 4. 如果帳戶變了->回滾當前帳戶金額 異動新帳戶金額
-                    
+                    switch ($form->model()->type) {
+                        case 'income': // 原本是收入
+                            break;
+                        case 'expense': // 原本是支出
+                            break;
+                    }
                 }
             } 
             // 補充：自增是DB做的，表單也不會送出id；行內修改都是update那個欄位而已，表單也不會送出id

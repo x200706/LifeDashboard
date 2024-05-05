@@ -17,7 +17,7 @@ class HomeController extends Controller
             ->description('適用於各種共同生活群體的管理系統')
             ->row(function (Row $row) {
 
-                $row->column(4,'首頁'); //TODO 填充首頁內容
+                $row->column(4,'首頁');
 
                 $row->column(4,'最新消息');
 
