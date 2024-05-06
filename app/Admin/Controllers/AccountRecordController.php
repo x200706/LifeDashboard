@@ -31,6 +31,8 @@ class AccountRecordController extends AdminController
     {
         $grid = new Grid(new AccountRecord);
 
+        $grid->model()->orderBy('date', 'desc');
+
         $grid->disableCreateButton(); // 禁用新增按鈕
         $grid->disableFilter(); // 禁用漏斗
         $grid->disableExport(); // 禁用匯出
@@ -55,7 +57,7 @@ class AccountRecordController extends AdminController
             $create->select('account', '帳戶')->options(Account::all()->pluck('desc','name')); // 根據官方文件 使用belongTo可以顯示更多
         });
 
-        $grid->column('date', '日期')->editable('date'); //TODO 由新到舊
+        $grid->column('date', '日期')->editable('date');
         $grid->column('name', '名稱')->editable();
         $grid->column('type', '收支類型')->editable('select', ['income' => '收入','expense' => '支出',])->label([
             'income' => 'success',
@@ -63,7 +65,7 @@ class AccountRecordController extends AdminController
         ]);
         $grid->column('tag', '記帳分類')->editable('select', AccountRecordTags::all()->pluck('desc','name')); // 震驚發現 因為跟display混用導致介面異常，發現editable會自己對應上陣列內容
         // 這種單純狀況也是能一開始grid就調用model()做join 不過因為涉及另外兩張表 之前測過這邊leftJoin可有問題的 用關係或手動查吧
-        $grid->column('amount', '金額')->sortable()->editable();
+        $grid->column('amount', '金額')->editable();
         $grid->column('account', '帳戶')->editable('select', Account::all()->pluck('desc','name'));
 
         return $grid;

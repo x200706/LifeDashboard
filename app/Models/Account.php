@@ -11,4 +11,6 @@ class Account extends Model
 
     public $incrementing = false; // varchar pk這個填錯會導致取值異常呢..
     public $timestamps = false; 
+
+    protected $guarded = [];  
 }

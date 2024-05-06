@@ -15,6 +15,8 @@ class AccountRecord extends Model
 
     public $incrementing = true; 
     public $timestamps = false; 
+    
+    protected $guarded = [];  
 
     // 哇怎麼這麼耗費記憶體..
     // public function tag()
