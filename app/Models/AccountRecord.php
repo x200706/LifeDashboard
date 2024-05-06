@@ -27,4 +27,6 @@ class AccountRecord extends Model
     // {
     //     return $this->hasOne(Account::class, 'name', 'account');
     // }
+
+    //TODO 刪除記帳的回滾動作
 }

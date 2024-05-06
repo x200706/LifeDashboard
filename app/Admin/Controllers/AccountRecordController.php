@@ -76,8 +76,10 @@ class AccountRecordController extends AdminController
      */
     protected function form()
     {
+        $call = $this;
+        
         $form = new Form(new AccountRecord);
-
+        
         $form->date('date', '日期');
         $form->text('name', '名稱');
         $form->select('type', '收支類型')->options(['income' => '收入','expense' => '支出',]);
@@ -85,48 +87,60 @@ class AccountRecordController extends AdminController
         $form->number('amount', '金額');
         $form->select('account', '帳戶')->options(Account::all()->pluck('desc','name'));
 
-        //TODO 註解好亂把註解減少或搬走
-        //TODO 根據收支類型異動帳戶金額
-        $form->saving(function (Form $form) {
-            // 行內編輯一次只能改一格嘛～所以一次只進一種判斷式
-            // 寫法有點醜ˇWˇ
-
-            // 1. 非首次新增才會進到這裡（首次新增時且存檔前還沒執行SQL，DB裡沒這資料，自然也會自增id，所以根本查不到東西）
-            if (!($form->model()->id === null)) { //TODO 寫成func checkCreateOrUpdate enum
-
-                // 變了定義：表單收到的，跟更新前的資料庫內容不同，如果選一樣送出的就不會進入各個條件，請放心
-                if ($form->type != $form->model()->type) { //TODO 2. 如果收支類型變了->異動當前帳戶金額
-                    $amount = $form->model()->amount; // 要異動的量
-                    switch ($form->type) {
-                        case 'income': // 從支出變為收入
-                            break;
-                        case 'expense': // 從收入變為支出
-                            break;
-                    }
-                } elseif ($form->amount != $form->model()->amount) { //TODO 3. 如果金額變了->異動當前帳戶金額
-                    switch ($form->model()->type) {
-                        case 'income': // 原本是收入
-                            break;
-                        case 'expense': // 原本是支出
-                            break;
-                    }
-                    // 先退回原本的金額
-                    // 抓取DB收支類型後進行金額異動
-                } elseif ($form->account != $form->model()->account) { //TODO 4. 如果帳戶變了->回滾當前帳戶金額 異動新帳戶金額
-                    switch ($form->model()->type) {
-                        case 'income': // 原本是收入
-                            break;
-                        case 'expense': // 原本是支出
-                            break;
-                    }
-                }
-            } 
-            // 補充：自增是DB做的，表單也不會送出id；行內修改都是update那個欄位而已，表單也不會送出id
-        
+        $form->saving(function (Form $form) use ($call) {
+            if (is_null($form->model()->id)) { // 首次新增（存檔前還沒執行SQL，自然也不會在DB自增id，所以也查不到這筆資料的id）
+                $originAccountAmount = Account::find($form->account)->first()->amount;
+                if ($form->type == 'income') {
+                    Account::find($form->account)->update(['amount' => $originAccountAmount + $form->amount]);
+                } else {
+                    Account::find($form->account)->update(['amount' => $originAccountAmount - $form->amount]);
+                } 
+            } else { // 更新操作
+                $call->updateAccountReferColum($form);
+            }
         });
 
-        //TODO 刪除記帳的回滾動作
-
         return $form;
+    }
+
+    // 檢查是否需要更新帳戶金額並調用異動帳戶金額方法
+    function updateAccountReferColum($form) {
+        // 新的值 沒有更新就空的
+        $newRecordType = $form->type;
+        $newRecordAmount = $form->amount;
+        $newRecordAccount = $form->account;
+
+        // 舊的值
+        $originRecordType = $form->model()->type;
+        $originRecordAmount = $form->model()->amount;
+        $originRecordAccount = $form->model()->account;
+        $originAccountAmount = Account::find($form->model()->account)->first()->amount;
+
+        if (!is_null($newRecordType) && ($newRecordType != $originRecordType)) { // 收支類型變化
+            $amountChange = ($newRecordType == 'income') ? $originRecordAmount * 2 : -$originRecordAmount * 2;
+            $this->updateAccountAmount($originRecordAccount, $amountChange);
+        } elseif (!is_null($newRecordAmount) && $newRecordAmount != $originRecordAccount) { // 金額變化
+            $amountChange = $newRecordAmount - $originRecordAmount;                                                          
+            if ($originRecordType == 'income') {
+                $this->updateAccountAmount($originRecordAccount, -$amountChange);
+            } else {
+                $this->updateAccountAmount($originRecordAccount, $amountChange);
+            }                                                    
+        } elseif (!is_null($newRecordAccount) && $newRecordAccount != $originRecordAccount) { // 帳戶變化
+            $amountChange = ($originRecordType == 'income') ? -$originRecordAmount : $originRecordAmount;
+            $this->updateAccountAmount($originRecordAccount, $amountChange);
+
+            $transAmountChange = ($originRecordType == 'income') ? $originRecordAmount : -$originRecordAmount;
+            $this->updateAccountAmount($newRecordAccount, $transAmountChange);
+        }
+    }
+
+    // 異動帳戶金額
+    function updateAccountAmount($accountPk, $amountChange) {
+        $account = Account::find($accountPk);
+        $currentAmount = $account->amount;
+        $newAmount = $currentAmount + $amountChange;
+
+        $account->update(['amount' => $newAmount]);
     }
 }
