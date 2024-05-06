@@ -91,7 +91,7 @@ class AccountRecordController extends AdminController
 
         $form->saving(function (Form $form) use ($call) {
             if (is_null($form->model()->id)) { // 首次新增（存檔前還沒執行SQL，自然也不會在DB自增id，所以也查不到這筆資料的id）
-                $originAccountAmount = Account::find($form->account)->first()->amount;
+                $originAccountAmount = Account::find($form->account)->get()->first()->amount;
                 if ($form->type == 'income') {
                     Account::find($form->account)->update(['amount' => $originAccountAmount + $form->amount]);
                 } else {
@@ -116,7 +116,7 @@ class AccountRecordController extends AdminController
         $originRecordType = $form->model()->type;
         $originRecordAmount = $form->model()->amount;
         $originRecordAccount = $form->model()->account;
-        $originAccountAmount = Account::find($form->model()->account)->first()->amount;
+        $originAccountAmount = Account::find($form->model()->account)->get()->first()->amount;
 
         if (!is_null($newRecordType) && ($newRecordType != $originRecordType)) { // 收支類型變化
             $amountChange = ($newRecordType == 'income') ? $originRecordAmount * 2 : -$originRecordAmount * 2;
