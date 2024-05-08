@@ -115,7 +115,7 @@ class AccountRecordController extends AdminController
         $originRecordType = $form->model()->type;
         $originRecordAmount = $form->model()->amount;
         $originRecordAccount = $form->model()->account;
-        $originAccountAmount = Account::find($form->model()->account)->get()->first()->amount;
+        $originAccountAmount = Account::find($form->model()->account)->amount;
 
         if (!is_null($newRecordType) && ($newRecordType != $originRecordType)) { // 收支類型變化
             $amountChange = ($newRecordType == 'income') ? $originRecordAmount * 2 : -$originRecordAmount * 2;
