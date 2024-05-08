@@ -41,7 +41,7 @@ class AccountRecord extends Model
            $deleteRecordAmount = $model->amount;
            $deleteRecordType = $model->type;
 
-           $originAccount = Account::find($deletedRecordAccount);
+           $originAccount = Account::find($deleteRecordAccount);
            $originAccountAmount = $originAccount->amount;
             if ($deleteRecordType == 'income'){
                 $originAccount->update(['amount' => $originAccountAmount - $deleteRecordAmount]);
