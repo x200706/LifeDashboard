@@ -30,5 +30,24 @@ class AccountRecord extends Model
     //     return $this->hasOne(Account::class, 'name', 'account');
     // }
 
-    //TODO 刪除記帳的回滾動作
+    // 刪除記帳的帳戶金額回填動作
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($model)
+        {
+           $deleteRecordAccount = $model->account;
+           $deleteRecordAmount = $model->amount;
+           $deleteRecordType = $model->type;
+
+           $originAccount = Account::find($deletedRecordAccount);
+           $originAccountAmount = $originAccount->amount;
+            if ($deleteRecordType == 'income'){
+                $originAccount->update(['amount' => $originAccountAmount - $deleteRecordAmount]);
+            } else {
+                $originAccount->update(['amount' => $originAccountAmount + $deleteRecordAmount]);
+            }
+        });
+    }
 }
