@@ -123,9 +123,9 @@ class AccountRecordController extends AdminController
         } elseif (!is_null($newRecordAmount) && $newRecordAmount != $originRecordAccount) { // 金額變化
             $amountChange = $newRecordAmount - $originRecordAmount;                                                          
             if ($originRecordType == 'income') {
-                $this->updateAccountAmount($originRecordAccount, -$amountChange);
-            } else {
                 $this->updateAccountAmount($originRecordAccount, $amountChange);
+            } else {
+                $this->updateAccountAmount($originRecordAccount, -$amountChange);
             }                                                    
         } elseif (!is_null($newRecordAccount) && $newRecordAccount != $originRecordAccount) { // 帳戶變化
             $amountChange = ($originRecordType == 'income') ? -$originRecordAmount : $originRecordAmount;
