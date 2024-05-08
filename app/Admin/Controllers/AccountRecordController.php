@@ -91,11 +91,10 @@ class AccountRecordController extends AdminController
 
         $form->saving(function (Form $form) use ($call) {
             if (is_null($form->model()->id)) { // 首次新增（存檔前還沒執行SQL，自然也不會在DB自增id，所以也查不到這筆資料的id）
-                $originAccountAmount = Account::find($form->account)->get()->first()->amount;
                 if ($form->type == 'income') {
-                    Account::find($form->account)->update(['amount' => $originAccountAmount + $form->amount]);
+                    $call->updateAccountAmount($form->account, $form->amount);
                 } else {
-                    Account::find($form->account)->update(['amount' => $originAccountAmount - $form->amount]);
+                    $call->updateAccountAmount($form->account, $form->amount);
                 } 
             } else { // 更新操作
                 $call->updateAccountReferColum($form);
@@ -141,6 +140,7 @@ class AccountRecordController extends AdminController
     function updateAccountAmount($accountPk, $amountChange) {
         $account = Account::find($accountPk);
         $currentAmount = $account->amount;
+        Log::info('原先帳戶金額'.$currentAmount);
         $newAmount = $currentAmount + $amountChange;
 
         $account->update(['amount' => $newAmount]);
