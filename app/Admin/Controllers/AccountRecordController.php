@@ -94,7 +94,7 @@ class AccountRecordController extends AdminController
                 if ($form->type == 'income') {
                     $call->updateAccountAmount($form->account, $form->amount);
                 } else {
-                    $call->updateAccountAmount($form->account, $form->amount);
+                    $call->updateAccountAmount($form->account, -$form->amount);
                 } 
             } else { // 更新操作
                 $call->updateAccountReferColum($form);
