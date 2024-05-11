@@ -82,12 +82,14 @@ class AccountRecordController extends AdminController
         
         $form = new Form(new AccountRecord);
         
-        $form->date('date', '日期');
-        $form->text('name', '名稱');
-        $form->select('type', '收支類型')->options(['income' => '收入','expense' => '支出',]);
-        $form->select('tag', '記帳分類')->options(AccountRecordTags::all()->pluck('desc','name'));
-        $form->number('amount', '金額');
-        $form->select('account', '帳戶')->options(Account::all()->pluck('desc','name'));
+        // 表單驗證寫在這邊就好了，上方有沒有寫沒差
+        // 但已知有個送出提示按鈕卡住的bug orz
+        $form->date('date', '日期')->rules('required');
+        $form->text('name', '名稱')->rules('required|min:1');
+        $form->select('type', '收支類型')->options(['income' => '收入','expense' => '支出',])->rules('required');
+        $form->select('tag', '記帳分類')->options(AccountRecordTags::all()->pluck('desc','name'))->rules('required');
+        $form->number('amount', '金額')->rules('required|regex:/^[1-9][0-9]*$/|min:1');
+        $form->select('account', '帳戶')->options(Account::all()->pluck('desc','name'))->rules('required');
 
         $form->saving(function (Form $form) use ($call) {
             if (is_null($form->model()->id)) { // 首次新增（存檔前還沒執行SQL，自然也不會在DB自增id，所以也查不到這筆資料的id）
