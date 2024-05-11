@@ -29,7 +29,7 @@ Admin::style('
 }
 
 .main-header .sidebar-toggle:before, .fa-refresh:before, span.hidden-xs{
-    color: #8c9fa1;
+    color: #fff;
 }
 
 .logo-mini:hover {
