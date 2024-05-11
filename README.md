@@ -1,6 +1,6 @@
 ## 已知issue
 - 記帳管理頁面上方的快速新增，如果欄位不符合驗證，出現提示後提交按鈕會卡在loading字樣無法再次送出
-    - 2024查閱官方GitHub issue網友貢獻有修到獨立表單頁的部分，但似乎沒有修到`editable()`，有空先研究js怎麼修，不能修再去官方提issue
+    - 2024查閱官方GitHub issue網友[貢獻](https://github.com/z-song/laravel-admin/pull/5385)有修到獨立表單頁的部分，但似乎沒有修到`editable()`，有空先研究js怎麼修，不能修再去官方提issue
 
 ## 運作環境
 這是Laravel 8，你需要在主機或容器準備：
