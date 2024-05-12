@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use Encore\Admin\Controllers\AdminController;
+use Encore\Admin\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -51,7 +52,7 @@ class AccountRecordController extends AdminController
         $grid->quickCreate(function (Grid\Tools\QuickCreate $create) { // 注意到匿名函數裡面可以用最外面的use？！
             $create->date('date', '日期');
             $create->text('name', '名稱');
-            $create->select('type', '收支類型')->options(['income' => '收入','expense' => '支出',]);
+            $create->select('type', '收支類型')->options(['income' => '❇️收入','expense' => '🔻支出',]);
             $create->select('tag', '記帳分類')->options(AccountRecordTags::all()->pluck('desc','name'));
             $create->integer('amount', '金額');
             $create->select('account', '帳戶')->options(Account::all()->pluck('desc','name')); // 根據官方文件 使用belongTo可以顯示更多
@@ -59,11 +60,20 @@ class AccountRecordController extends AdminController
 
         $grid->column('date', '日期')->editable('date');
         $grid->column('name', '名稱')->editable();
-        $grid->column('type', '收支類型')->editable('select', ['income' => '收入','expense' => '支出',])->label([
-            'income' => 'success',
-            'expense' => 'danger',
-        ]);
-        $grid->column('tag', '記帳分類')->editable('select', AccountRecordTags::all()->pluck('desc','name')); // 震驚發現 因為跟display混用導致介面異常，發現editable會自己對應上陣列內容
+        $grid->column('type', '收支類型')->editable('select', ['income' => '❇️收入','expense' => '🔻支出',]);
+
+        // 因為editable跟display混用導致介面異常（如下方寫法時欄位顯示會變成一隻筆，如果先editable再下display則無更改顯示作用），震驚發現editable會自己對應上陣列內容
+        // ^20240512這延伸一個問題，萬一我想顯示美化過的選項怎麼辦...？
+        // $grid->column('type', '收支類型')->display(function ($type) {
+        //     if ($type == 'income'){
+        //         return "<span style='color:green'>$type</span>";
+        //     } else {
+        //         return "<span style='color:red'>$type</span>";
+        //     }
+        // })->editable('select', ['income' => '收入','expense' => '支出',]);
+
+        $grid->column('tag', '記帳分類')->editable('select', AccountRecordTags::all()->pluck('desc','name'));
+
         // 這種單純狀況也是能一開始grid就調用model()做join 不過因為涉及另外兩張表 之前測過這邊leftJoin可有問題的 用關係或手動查吧
         $grid->column('amount', '金額')->editable();
         $grid->column('account', '帳戶')->editable('select', Account::all()->pluck('desc','name'));
