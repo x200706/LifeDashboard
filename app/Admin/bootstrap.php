@@ -50,3 +50,11 @@ Admin::style('
     border-bottom: dashed 1px #fff;
 }
 ');
+
+$script = <<<JS
+$('.class').on('save', function(e, params) {
+$.pjax.reload('#pjax-container');
+});
+JS;
+Admin::script($script);
+// issue: https://github.com/z-song/laravel-admin/issues/3585
