@@ -22,7 +22,7 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo' => '<b>生<b>活後台',
+    'logo' => '<b>生活後台</b>', // 如果這邊HTML寫壞，有的主題啊會直接不顯示LOGO－但在black系列卻仍會顯示...->改成正確的CSS反而跑掉，bug啊...
 
     /*
     |--------------------------------------------------------------------------
@@ -275,7 +275,7 @@ return [
     |    "skin-red", "skin-red-light", "skin-black", "skin-black-light".
     |
     */
-    'skin' => env('ADMIN_SKIN', 'skin-black'),
+    'skin' => env('ADMIN_SKIN', 'skin-purple'),
 
     /*
     |--------------------------------------------------------------------------
