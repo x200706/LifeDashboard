@@ -14,7 +14,7 @@ Route::group([
     $router->resource('/', HomeController::class);
     // https://blog.csdn.net/xcbzsy/article/details/103287880
     $router->get('{id}/edit', HomeController::class.'@edit'); 
-    $router->get('{id}', HomeController::class.'@show'); 
+    // $router->get('{id}', HomeController::class.'@show'); 
     $router->resource('account', AccountController::class);
     $router->resource('account-record', AccountRecordController::class);
     $router->resource('account-record-tags', AccountRecordTagsController::class);
