@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use DateTimeInterface;
 
 class Bulletin extends Model
 {
@@ -19,4 +20,10 @@ class Bulletin extends Model
     const UPDATED_AT = null; // 如果不設為NULL會自己多傳...
 
     protected $guarded = [];  
+
+    // issue: https://github.com/z-song/laravel-admin/issues/5479
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
+    }
 }
