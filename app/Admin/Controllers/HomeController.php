@@ -45,7 +45,7 @@ class HomeController extends AdminController
 
         $grid->column('title', '文章標題'); 
         $grid->column('tag', '分類'); 
-        $grid->column('created_at', '發文日期')->date('Y-m-d H:m')->sortable(); 
+        $grid->column('created_at', '發文日期')->sortable(); 
         $grid->column('creator', '發文者'); 
 
         //TODO 關聯顯示
@@ -67,8 +67,7 @@ class HomeController extends AdminController
         $form->text('tag', '分類')->required();
         $form->textarea('content', '內文')->placeholder('請使用HTML')->required();
         $form->text('creator', '發文者')->default(Admin::user()->username)->readonly();
-        $form->datetime('create_at', '發文日期')->default(date())->readonly();
-        
+        date_default_timezone_set("Asia/Taipei");
         return $form;
     }
 
