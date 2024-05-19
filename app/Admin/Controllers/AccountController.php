@@ -57,7 +57,7 @@ class AccountController extends AdminController
      * @return Form
      */
     protected function form()
-    { // 經過測試，確實這邊不能新增的欄位，也不能用快捷新增 @@ 生成的SQL語句會亂掉ㄟ
+    { // 經過測試，這邊設定為不能新增的欄位，也不能用快捷新增 @@ 生成的SQL語句會亂掉ㄟ
         $form = new Form(new Account);
 
         $form->text('name', '戶頭代號');
