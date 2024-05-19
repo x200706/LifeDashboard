@@ -23,7 +23,7 @@ Encore\Admin\Form::forget(['map', 'editor']);
 
 // edit for skin-black but found something wrong 20240518
 // 因為網站logo bug解掉 發現主題常態的導航列是全白的 這方面改色沒寫 加上小按鈕顏色被我改為白色
-Admin::style('
+// Admin::style('
 // .skin-black .main-header>.logo {
 //     background-color: #24b8bf;
 //     color: #ffffff;
@@ -43,13 +43,13 @@ Admin::style('
 //     display: contents!important; /*日期選擇器CSS修復*/ // 我跟你說，有夠玄的 logo問題修好後，這個也不用了
 // }
 
-/*修正有連結的標籤色彩*/
-.label.label-danger a.grid-editable-type.editable.editable-click {
-    color:#fff;
-    border-bottom: dashed 1px #fff;
-}
-.label.label-success a.grid-editable-type.editable.editable-click {
-    color:#fff;
-    border-bottom: dashed 1px #fff;
-}
-');
+// /*修正有連結的標籤色彩->難以刷新元件，棄用*/
+// .label.label-danger a.grid-editable-type.editable.editable-click {
+//     color:#fff;
+//     border-bottom: dashed 1px #fff;
+// }
+// .label.label-success a.grid-editable-type.editable.editable-click {
+//     color:#fff;
+//     border-bottom: dashed 1px #fff;
+// }
+// ');
