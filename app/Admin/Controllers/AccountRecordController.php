@@ -60,7 +60,7 @@ class AccountRecordController extends AdminController
 
         $grid->column('date', '日期')->editable('date');
         $grid->column('name', '名稱')->editable();
-        $grid->column('type', '收支類型')->editable('select', ['income' => '❇️增加','expense' => '🔻減少',]);
+        $grid->column('type', '增減類型')->editable('select', ['income' => '❇️增加','expense' => '🔻減少',]);
 
         // 因為editable跟display混用導致介面異常（如下方寫法時欄位顯示會變成一隻筆，如果先editable再下display則無更改顯示作用），震驚發現editable會自己對應上陣列內容
         // ^20240512這延伸一個問題，萬一我想顯示美化過的選項怎麼辦...？
