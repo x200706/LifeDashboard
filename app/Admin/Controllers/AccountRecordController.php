@@ -52,7 +52,7 @@ class AccountRecordController extends AdminController
         $grid->quickCreate(function (Grid\Tools\QuickCreate $create) { // 注意到匿名函數裡面可以用最外面的use？！
             $create->date('date', '日期');
             $create->text('name', '名稱');
-            $create->select('type', '收支類型')->options(['income' => '❇️增加','expense' => '🔻減少',]);
+            $create->select('type', '增減類型')->options(['income' => '❇️增加','expense' => '🔻減少',]);
             $create->select('tag', '記帳分類')->options(AccountRecordTags::all()->pluck('desc','name'));
             $create->integer('amount', '金額');
             $create->select('account', '帳戶')->options(Account::all()->pluck('desc','name')); // 根據官方文件 使用belongTo可以顯示更多
@@ -96,7 +96,7 @@ class AccountRecordController extends AdminController
         // 但已知有個送出提示按鈕卡住的bug orz
         $form->date('date', '日期')->rules('required');
         $form->text('name', '名稱')->rules('required|min:1');
-        $form->select('type', '收支類型')->options(['income' => '增加','expense' => '減少',])->rules('required');
+        $form->select('type', '增減類型')->options(['income' => '增加','expense' => '減少',])->rules('required');
         $form->select('tag', '記帳分類')->options(AccountRecordTags::all()->pluck('desc','name'))->rules('required');
         $form->number('amount', '金額')->rules('required|regex:/^[1-9][0-9]*$/|min:1');
         $form->select('account', '帳戶')->options(Account::all()->pluck('desc','name'))->rules('required');
